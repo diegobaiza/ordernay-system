@@ -1,0 +1,27 @@
+@apiURL = http://localhost:3300
+
+GET {{apiURL}}/videos
+
+###
+GET {{apiURL}}/videos/66690267bd1be58e2099cda9
+
+###
+POST {{apiURL}}/videos
+Content-Type: application/json
+
+{
+    "url": "https://www.youtube.com/watch?v=-CfQ4egquwg",
+    "title": "Sharks - Subterranean",
+    "description": "This is a release by @sharkstunes at Disciple Records"
+}
+
+###
+DELETE {{apiURL}}/videos/666901c9ca440d03afed2de0
+
+###
+PUT {{apiURL}}/videos/66690267bd1be58e2099cda9
+Content-Type: application/json
+
+{
+    "title": "Sharks - Etheral"
+}

@@ -1,0 +1,39 @@
+@startuml Secuencia
+actor Mesero
+participant Sistema
+actor Bartender
+actor Cocinero
+actor Administrador
+
+Mesero ->> Sistema: Inicia Sesión
+Mesero ->> Sistema: Ver Estado de Mesas
+Mesero ->> Sistema: Seleccionar Mesa Disponible
+Sistema -->> Mesero: Verifica disponibilidad
+Mesero ->> Sistema: Ver Menú
+Mesero ->> Sistema: Seleccionar Elementos
+Mesero ->> Sistema: Confirmar Pedido
+Sistema -->> Mesero: Guarda Pedido
+Mesero ->> Sistema: Enviar Pedido a Cocina
+Mesero ->> Sistema: Enviar Pedido a Barra
+Sistema -->> Cocinero: Notifica Pedido Comida
+Sistema -->> Bartender: Notifica Pedido Bebida
+
+Cocinero ->> Sistema: Inicia Sesión
+Cocinero ->> Sistema: Ver Órdenes en Cola
+Cocinero ->> Sistema: Seleccionar Orden Actual
+Cocinero ->> Sistema: Marcar como Completada o Cancelada
+Sistema -->> Mesero: Notifica Estado del Pedido
+
+Bartender ->> Sistema: Inicia Sesión
+Bartender ->> Sistema: Ver Órdenes en Cola
+Bartender ->> Sistema: Seleccionar Orden Actual
+Bartender ->> Sistema: Marcar como Completada o Cancelada
+Sistema -->> Mesero: Notifica Estado del Pedido
+
+Administrador ->> Sistema: Inicia Sesión
+Administrador ->> Sistema: Gestión de Usuarios
+Administrador ->> Sistema: Gestión de Órdenes
+Administrador ->> Sistema: Gestión del Menú
+Administrador ->> Sistema: Acceso a Reportes
+Administrador ->> Sistema: Acceso a Vistas de Mesero, Cocinero, Bartender
+@enduml

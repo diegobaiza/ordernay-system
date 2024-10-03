@@ -1,0 +1,79 @@
+@startuml clases
+
+class Usuario {
+    +id: int
+    +username: string
+    +password: string
+    +role: string
+    +iniciarSesion(): void
+}
+
+class Mesa {
+    +id: int
+    +numero: int
+    +estado: string
+    +verEstado(): void
+    +seleccionarMesa(): void
+}
+
+class Pedido {
+    +id: int
+    +mesaID: int
+    +elementos: string[]
+    +estado: string
+    +horaCreacion: Date
+    +horaEnvio: Date
+    +agregarElemento(): void
+    +editarPedido(): void
+    +confirmarPedido(): void
+    +cancelarPedido(): void
+    +enviarPedido(): void
+}
+
+class ElementoMenu {
+    +id: int
+    +nombre: string
+    +categoria: string
+    +precio: float
+    +seleccionar(): void
+}
+
+class Bartender {
+    +id: int
+    +nombre: string
+    +role: string
+    +verOrdenes(): void
+    +marcarCompletada(): void
+    +cancelarOrden(): void
+    +notificarMesero(): void
+}
+
+class Cocinero {
+    +id: int
+    +nombre: string
+    +role: string
+    +verOrdenes(): void
+    +marcarCompletada(): void
+    +cancelarOrden(): void
+    +notificarMesero(): void
+}
+
+class Administrador {
+    +id: int
+    +nombre: string
+    +role: string
+    +gestionarUsuarios(): void
+    +gestionarOrdenes(): void
+    +gestionarMenu(): void
+    +verReportes(): void
+    +verVistasMeseroCocineroBartender(): void
+}
+
+Usuario --> Mesa: Mesero selecciona
+Usuario --> Pedido: Cocina/Barra tienen
+Pedido --> ElementoMenu: Contiene elementos
+Pedido --> Cocinero: Transmitido por el mesero
+Pedido --> Bartender: Transmitido por el mesero
+Usuario <|-- Administrador: Cuenta con varios roles
+
+@enduml

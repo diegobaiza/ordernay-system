@@ -1,0 +1,79 @@
+@startuml caso de uso
+
+left to right direction
+actor "Admin, mesero, cocina/barra" as user <<user>>
+
+'Casos de uso'
+usecase "Incicia Sesion" as UC1
+rectangle Sistema {
+
+    rectangle Mesero {
+        usecase "Vista_Mesero" as UC2
+        usecase "Vista de Mesas" as UCMmesas
+        usecase "Vista Menu" as UCMmenu
+        usecase "Acciones pedidos" as UCMacciones
+        usecase "Confirmar/Enviar" as UCMconfirmar
+        usecase "Editar" as UCMeditar
+        usecase "Cancelar" as UCMcancelar
+        usecase "Historial" as UCMhistorial
+    }
+
+    rectangle Admin {
+    usecase "Vista_Administrador" as UC3
+    usecase "Acceso a Vistas: Mesero, Cocina/Barra" as UCADvistas
+    usecase "Gestion de Usuarios" as UCADusuarios
+    usecase "Gestion de Ordenes" as UCADordenes
+    usecase "Gestion de Menu" as UCADmenu
+    usecase "Gestion de Reporteria" as UCADreportes
+
+    }
+    rectangle CocinaBarra {
+    usecase "Vista_CocinaBarra" as UC4
+    usecase "Vista de Ordenes" as UCCBordenes
+    usecase "Acciones Pedidos" as UCCBacciones
+    usecase "Enviar" as UCCBconfirmar
+    usecase "Cancelar" as UCCBcancelar
+    usecase "Notificacion" as UCCBnotificacion
+    }
+}
+
+package Database {
+    usecase "Database Ordernay" as UCdatabase
+}
+
+'Relaciones'
+
+user --> UC1
+user --> UC1
+user --> UC1
+UC1 --> UC2: Login Mesero
+UC1 --> UC3: Login Administrador
+UC1 --> UC4: Login Personal de Cocina
+UC2 --> UCMmesas
+UC2 --> UCMmenu
+UC2 --> UCMacciones
+UCMacciones --> UCMconfirmar
+UCMacciones --> UCMeditar
+UCMacciones --> UCMcancelar
+UCMacciones --> UCMhistorial
+UC3 --> UCADusuarios
+UC3 --> UCADordenes
+UC3 --> UCADmenu
+UC3 --> UCADreportes
+UC3 --> UCADvistas
+UC4 --> UCCBordenes
+UC4 --> UCCBacciones
+UCCBacciones --> UCCBcancelar
+UCCBacciones --> UCCBconfirmar
+UCCBacciones --> UCCBnotificacion
+
+'Relaciones con comunicacion a la BD'
+UC1 ..> UCdatabase: extends
+UCdatabase ..> Sistema
+Sistema ..> UCdatabase
+UCMhistorial ..> UCdatabase: include
+UCdatabase ..> UCMhistorial
+UCdatabase ..> UCCBnotificacion: extends
+UCCBnotificacion ..> UCdatabase: includes
+
+@enduml

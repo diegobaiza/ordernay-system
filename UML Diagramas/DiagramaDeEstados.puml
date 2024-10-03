@@ -1,0 +1,48 @@
+@startuml Estados
+[*] --> SistemaInactivo
+
+SistemaInactivo : Estado Inicial
+
+SistemaInactivo --> Autenticacion : Usuario intenta iniciar sesión
+
+state Autenticacion {
+  [*] --> VerificarCredenciales
+  VerificarCredenciales --> SesionIniciada : Credenciales válidas
+  VerificarCredenciales --> Autenticacion : Credenciales inválidas
+}
+
+state SesionIniciada {
+  [*] --> VistaMesas : Mesero elige ver mesas
+  [*] --> VistaOrdenes : Cocinero/Bartender ve órdenes en cola
+  [*] --> GestionSistema : Administrador accede a funciones de gestión
+}
+
+VistaMesas --> MesaSeleccionada : Mesero selecciona mesa disponible
+VistaMesas --> VistaMesas : Mesa no disponible (advertencia)
+
+MesaSeleccionada --> PedidoEnProceso : Mesero selecciona elementos del menú
+PedidoEnProceso --> PedidoEnviado : Mesero confirma el pedido
+
+PedidoEnviado --> NotificarCocinero : Pedido enviado a cocina
+PedidoEnviado --> NotificarBartender : Pedido enviado a barra
+
+NotificarCocinero --> PedidoCompletado : Cocinero marca como completado
+NotificarCocinero --> PedidoCancelado : Cocinero marca como cancelado
+NotificarBartender --> PedidoCompletado : Bartender marca como completado
+NotificarBartender --> PedidoCancelado : Bartender marca como cancelado
+
+PedidoCompletado --> NotificacionMesero : Notificar mesero que la orden está lista
+PedidoCancelado --> NotificacionMesero : Notificar mesero que la orden fue cancelada
+
+VistaOrdenes --> OrdenEnProceso : Cocinero/Bartender selecciona orden
+OrdenEnProceso --> PedidoCompletado : Orden completada
+OrdenEnProceso --> PedidoCancelado : Orden cancelada
+
+GestionSistema --> GestionUsuarios : Administrador gestiona usuarios
+GestionSistema --> GestionOrdenes : Administrador gestiona órdenes
+GestionSistema --> GestionMenu : Administrador gestiona menú
+GestionSistema --> VerReportes : Administrador accede a reportes
+
+SesionIniciada --> SistemaInactivo : Usuario cierra sesión
+
+@enduml

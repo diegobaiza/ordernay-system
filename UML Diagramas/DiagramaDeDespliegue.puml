@@ -1,0 +1,53 @@
+@startuml Despliegue
+left to right direction
+node "Frontend - React" {
+  [Aplicación Web Mesero]
+  [Aplicación Web Cocinero/Bartender]
+  [Aplicación Web Administrador]
+}
+
+node "Backend - Node JS" {
+  [Autenticación y Autorización]
+  [Gestión de Mesas]
+  [Gestión de Pedidos]
+  [Gestión de Órdenes]
+  [Gestión de Menú]
+  [Notificaciones]
+  [Gestión de Usuarios]
+  [Reportería]
+}
+
+database "Base de Datos - MySQL" {
+  [Usuarios]
+  [Mesas]
+  [Pedidos]
+  [Menú]
+}
+
+node "Servidor de Notificaciones" {
+  [Sistema de Notificaciones]
+}
+
+node "Sistema de Gestión de Roles" {
+  [Gestión de Roles]
+}
+
+[Aplicación Web Mesero] --> [Autenticación y Autorización]
+[Aplicación Web Mesero] --> [Gestión de Mesas]
+[Aplicación Web Mesero] --> [Gestión de Pedidos]
+
+[Aplicación Web Cocinero/Bartender] --> [Gestión de Órdenes]
+
+[Aplicación Web Administrador] --> [Gestión de Usuarios]
+[Aplicación Web Administrador] --> [Reportería]
+
+[Autenticación y Autorización] --> [Usuarios]
+[Gestión de Mesas] --> [Mesas]
+[Gestión de Pedidos] --> [Pedidos]
+[Gestión de Menú] --> [Menú]
+[Gestión de Órdenes] --> [Pedidos]
+
+[Notificaciones] --> [Sistema de Notificaciones]
+[Gestión de Usuarios] --> [Gestión de Roles]
+
+@enduml
