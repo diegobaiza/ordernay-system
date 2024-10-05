@@ -8,13 +8,15 @@ import {
 } from "sequelize-typescript";
 import Order from "../Order/order.model";
 import Product from "../Product/product.model";
+import TableSite from "../Table/tableSite.model";
 
 interface OrderDetailAttributes {
   id?: number;
+  tableID?: number;
   orderID?: number;
   productID?: number;
   quantity?: number;
-  price?: number;
+  total?: number;
 }
 
 @Table({
@@ -54,19 +56,19 @@ class OrderDetail
 
   @Column({
     type: DataType.FLOAT,
-    allowNull: false,
+    allowNull: true,
   })
   price!: number;
 
   @BelongsTo(() => Order, {
     foreignKey: "orderID",
-    as: "order",
+    as: "orders", // Cambiado a singular
   })
   order!: Order;
 
   @BelongsTo(() => Product, {
     foreignKey: "productID",
-    as: "product",
+    as: "products", // Cambiado a singular
   })
   product!: Product;
 }

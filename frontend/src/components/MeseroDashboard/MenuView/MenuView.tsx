@@ -12,7 +12,7 @@ import { useAuth } from "../../../context/AuthContext/AuthContext";
 interface Product {
   id: string;
   name: string;
-  price: number;
+  // price: number;
   description: string;
 }
 
@@ -22,8 +22,9 @@ interface SubCategory {
 }
 
 interface OrderItem {
+  productID: string;
   name: string;
-  price: number;
+  // price: number;
   quantity: number;
 }
 
@@ -77,7 +78,7 @@ const MenuView: React.FC = () => {
   // Add to orderItems
   const handleAddToOrder = (product: Product) => {
     const existingItemIndex = orderItems.findIndex(
-      (item) => item.name === product.name
+      (item) => item.productID === product.id
     );
 
     if (existingItemIndex !== -1) {
@@ -85,18 +86,32 @@ const MenuView: React.FC = () => {
       updatedOrderItems[existingItemIndex].quantity += 1;
       setOrderItems(updatedOrderItems);
     } else {
-      setOrderItems([...orderItems, { ...product, quantity: 1 }]);
+      setOrderItems([
+        ...orderItems,
+        {
+          productID: product.id,
+          name: product.name,
+          quantity: 1,
+        },
+      ]);
     }
   };
 
-  // Handle removing an item from the order
-  const handleRemoveFromOrder = (productName: string) => {
-    const updatedOrderItems = orderItems.filter(
-      (item) => item.name !== productName
+  const handleUpdateQuantity = (productID: string, quantity: number) => {
+    const updatedOrderItems = orderItems.map((item) =>
+      item.productID === productID ? { ...item, quantity } : item
     );
     setOrderItems(updatedOrderItems);
   };
 
+  // Handle removing an item from the order
+  const handleRemoveFromOrder = (productID: string) => {
+    const updatedOrderItems = orderItems.filter(
+      (item) => item.productID !== productID
+    );
+
+    setOrderItems(updatedOrderItems);
+  };
   // Handle sending the order
   const handleSendOrder = async () => {
     if (!usernameID) {
@@ -115,11 +130,12 @@ const MenuView: React.FC = () => {
         tableID: tableId, // Pasamos tableId correctamente
         status: "pending", // Define un estado por defecto
         items: orderItems.map((item) => ({
-          name: item.name,
+          productID: item.productID, // Solo enviamos el productID y quantity
           quantity: item.quantity,
-          // price: item.price,
         })),
       };
+
+      console.log(orderData);
 
       // Enviar la orden al backend
       const response = await axios.post(
@@ -167,6 +183,7 @@ const MenuView: React.FC = () => {
         tableNumber={tableNumber ?? 0} // Pasamos un valor por defecto si no está disponible
         onRemoveItem={handleRemoveFromOrder} // Pass remove handler to OrderSummary
         onSendOrder={handleSendOrder} // Pass send order handler to OrderSummary
+        onUpdateQuantity={handleUpdateQuantity}
       />
     </div>
   );

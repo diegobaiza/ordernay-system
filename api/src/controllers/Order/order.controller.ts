@@ -1,61 +1,93 @@
 import { Request, Response } from "express";
 import Order from "../../models/Order/order.model";
-import OrderDetail from "../../models/OrderDetail/orderDetail.model"; // Importar el modelo de OrderDetail
+import OrderDetail from "../../models/OrderDetail/orderDetail.model";
 import User from "../../models/User/user.model";
 import TableSite from "../../models/Table/tableSite.model";
 import Product from "../../models/Product/product.model";
+import Category from "../../models/Category/category.model";
+import SubCategory from "../../models/SubCategory/subCategory.model";
 
 export class OrderController {
   public async createOrder(req: Request, res: Response): Promise<Response> {
     const { usernameID, tableID, status, items } = req.body;
 
-    console.log(req.body);
-
-    // Validar datos necesarios
     if (!usernameID || !tableID || !status || !items || items.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Missing required fields or no items in the order." });
+      return res.status(400).json({
+        error: "Missing required fields or no items in the order.",
+      });
     }
 
     try {
-      // Crear la orden
       const order = await Order.create({ usernameID, tableID, status });
 
-      // Crear los detalles de la orden
+      const ordersForCocinero: any[] = [];
+      const ordersForBartender: any[] = [];
+
       for (const item of items) {
-        const product = await Product.findOne({ where: { name: item.name } });
+        const product = await Product.findByPk(item.productID, {
+          include: [
+            {
+              model: SubCategory,
+              as: "sub_category",
+              include: [
+                {
+                  model: Category,
+                  as: "category",
+                },
+              ],
+            },
+          ],
+        });
 
         if (!product) {
           return res
-            .status(400)
-            .json({ error: `Product ${item.name} not found` });
+            .status(404)
+            .json({ error: `Product not found: ID ${item.productID}` });
+        }
+        const subCategory = product.subCategory;
+        const category = subCategory ? subCategory.category : undefined;
+
+        console.log("Producto obtenido:", product);
+        console.log("SubCategory del producto:", subCategory);
+        console.log("Category de la SubCategory:", category);
+
+        const categoryName = category?.name || "undefined";
+
+        console.log("Nombre de la categoría:", categoryName);
+
+        if (categoryName === "bebidas") {
+          ordersForBartender.push(item);
+        } else if (["desayunos", "comidas"].includes(categoryName)) {
+          ordersForCocinero.push(item);
         }
 
         await OrderDetail.create({
           orderID: order.id,
-          productID: product.id, // Convertir el nombre del producto a productID
+          productID: item.productID,
           quantity: item.quantity,
-          price: item.price,
         });
       }
 
-      return res.status(201).json(order);
+      return res.status(201).json({
+        message: "Order created successfully",
+        cocineroOrders: ordersForCocinero,
+        bartenderOrders: ordersForBartender,
+      });
     } catch (error) {
-      return res.status(500).json({ error: `Error creating order: ${error}` });
+      return res.status(500).json({
+        error: `Error creating order: ${error}`,
+      });
     }
   }
 
   public async getOrder(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
 
-    // Validar id
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid order ID." });
     }
 
     try {
-      // Buscar la orden
       const order = await Order.findByPk(id, {
         include: [
           { model: User, as: "user" },
@@ -76,7 +108,6 @@ export class OrderController {
   public async updateOrder(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
 
-    // Validar id
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid order ID." });
     }
@@ -84,13 +115,11 @@ export class OrderController {
     const { usernameID, tableID, status } = req.body;
 
     try {
-      // Buscar la orden
       const order = await Order.findByPk(id);
       if (!order) {
         return res.status(404).json({ error: "Order not found." });
       }
 
-      // Actualizar los campos
       if (usernameID !== undefined) order.usernameID = usernameID;
       if (tableID !== undefined) order.tableID = tableID;
       if (status !== undefined) order.status = status;
@@ -105,13 +134,11 @@ export class OrderController {
   public async deleteOrder(req: Request, res: Response): Promise<Response> {
     const id = parseInt(req.params.id, 10);
 
-    // Validar id
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid order ID." });
     }
 
     try {
-      // Buscar la orden
       const order = await Order.findByPk(id);
       if (!order) {
         return res.status(404).json({ error: "Order not found." });

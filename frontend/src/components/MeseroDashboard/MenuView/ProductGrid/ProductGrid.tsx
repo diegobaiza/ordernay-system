@@ -2,11 +2,11 @@ import React from "react";
 import SwitchProductType from "../SwitchProductType/SwitchProductType"; // Agregamos el SwitchProductType
 
 interface ProductGridProps {
-  products: { id: string; name: string; price: number; description: string }[];
+  products: { id: string; name: string; description: string }[];
   onAddToOrder: (product: {
     id: string;
     name: string;
-    price: number;
+    // price: number;
     description: string;
   }) => void;
   category: string;

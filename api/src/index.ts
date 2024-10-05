@@ -63,7 +63,7 @@ sequelize
     await initializeSubCategories();
     await initializeProducts();
     // await initializatePresentation();
-    await initializatePrices();
+    // await initializatePrices();
     // await initializeUsers();
 
     // Cambiamos app.listen a server.listen para manejar el servidor HTTP y Socket.IO

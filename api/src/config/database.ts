@@ -7,7 +7,6 @@ import Order from "../models/Order/order.model";
 import OrderDetail from "../models/OrderDetail/orderDetail.model";
 import Price from "../models/Price/price.model";
 import Product from "../models/Product/product.model";
-import ProductDetail from "../models/ProductDetail/productDetail.model";
 import Role from "../models/Role/role.model";
 import SubCategory from "../models/SubCategory/subCategory.model";
 import TableSite from "../models/Table/tableSite.model";
@@ -34,7 +33,6 @@ const sequelize = new Sequelize(
       Category,
       SubCategory,
       Product,
-      ProductDetail,
       Price,
       Presentation,
       Order,

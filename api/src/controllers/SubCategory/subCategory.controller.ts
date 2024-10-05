@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import SubCategory from "../../models/SubCategory/subCategory.model";
 import Category from "../../models/Category/category.model";
-import { stringify } from "querystring";
 
 export class SubCategoryController {
   public static async getSubCategories(
@@ -27,7 +26,7 @@ export class SubCategoryController {
       // Usar el categoryID encontrado para filtrar las subcategorías
       const subcategories = await SubCategory.findAll({
         where: { categoryID: categoryData.id },
-        include: [{ model: Category, as: "categories" }], // Incluir relación con categorías
+        include: [{ model: Category, as: "category" }], // Incluir relación con categorías
       });
 
       if (subcategories.length === 0) {
@@ -81,7 +80,7 @@ export class SubCategoryController {
 
     try {
       const subcategory = await SubCategory.findByPk(id, {
-        include: [{ model: Category, as: "categories" }], // Incluye la relación con Category si es necesario
+        include: [{ model: Category, as: "category" }], // Incluye la relación con Category si es necesario
       });
       if (!subcategory) {
         return res.status(404).json({ message: "SubCategory not found." });

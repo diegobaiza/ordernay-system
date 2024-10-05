@@ -9,7 +9,7 @@ export class CategoryController {
   ): Promise<Response> {
     try {
       const categories = await Category.findAll({
-        include: [{ model: SubCategory, as: "subcategories" }],
+        include: [{ model: SubCategory, as: "sub_categories" }],
       });
       if (categories.length === 0) {
         return res.status(404).json({ message: "No categories found." });

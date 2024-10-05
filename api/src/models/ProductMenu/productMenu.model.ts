@@ -103,13 +103,13 @@ class ProductsMenu
 
   @BelongsTo(() => SubCategory, {
     foreignKey: "subCategoryID",
-    as: "subcategory",
+    as: "sub_categories",
   })
   subCategory!: SubCategory;
 
   @BelongsTo(() => Product, {
     foreignKey: "productID",
-    as: "product",
+    as: "products",
   })
   product!: Product;
 }

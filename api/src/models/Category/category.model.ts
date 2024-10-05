@@ -33,7 +33,7 @@ class Category extends Model<CategoryAttributes> implements CategoryAttributes {
   description?: string;
 
   @HasMany(() => SubCategory, {
-    as: "subcategories",
+    as: "sub_categories", // debe de ir en plural
   })
   subCategories!: SubCategory[];
 }

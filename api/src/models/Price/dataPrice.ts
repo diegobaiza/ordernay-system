@@ -3,7 +3,7 @@ import Price from "./price.model";
 export const initializatePrices = async () => {
   const prices = [
     {
-      presentationID: 1,
+      id: 1,
       price: 12.5,
       currency: "Q",
     },

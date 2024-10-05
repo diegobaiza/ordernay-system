@@ -2,13 +2,15 @@ import React, { useState } from "react";
 
 export interface OrderSummaryProps {
   orderItems: {
+    productID: string;
     name: string;
     quantity: number;
-    price: number;
+    // price: number;
   }[];
   tableNumber: number;
-  onRemoveItem: (name: string) => void;
-  onSendOrder: () => Promise<void>; // Añadimos prop para manejar el envío
+  onRemoveItem: (productID: string) => void;
+  onSendOrder: () => Promise<void>;
+  onUpdateQuantity: (productID: string, quantity: number) => void; // Nueva función para actualizar la cantidad
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({
@@ -16,13 +18,9 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   tableNumber,
   onRemoveItem,
   onSendOrder,
+  onUpdateQuantity,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const total = orderItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -54,7 +52,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
             Mesa {tableNumber}
           </div>
 
-          {/* Verificación si hay productos seleccionados */}
           {orderItems.length === 0 ? (
             <div className="pt-24 text-center font-style: italic font-bold text-gray-500">
               "Sin elementos"
@@ -68,27 +65,41 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                     className="p-2 rounded-md flex justify-between w-full"
                   >
                     <span>{item.name}</span>
-                    <div className="flex space-x-4">
-                      <span>{item.quantity}</span>
+                    <div className="flex items-center space-x-2">
                       <button
-                        className="bg-red-500 text-white px-2 py-1 rounded"
-                        onClick={() => onRemoveItem(item.name)}
+                        className="text-black px-2 py-1 rounded"
+                        onClick={() =>
+                          item.quantity === 1
+                            ? onRemoveItem(item.productID)
+                            : onUpdateQuantity(
+                                item.productID,
+                                item.quantity - 1
+                              )
+                        }
                       >
-                        X
+                        {item.quantity === 1 ? "x" : "<"}
+                      </button>
+                      <span className="px-2">{item.quantity}</span>
+                      <button
+                        className="text-black px-2 py-1 rounded"
+                        onClick={() =>
+                          onUpdateQuantity(item.productID, item.quantity + 1)
+                        }
+                      >
+                        {">"}
                       </button>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Total y botones de acción */}
               <div className="flex justify-evenly mt-4">
                 <button className="bg-red-500 text-white px-4 py-2 rounded">
                   Cancelar
                 </button>
                 <button
                   className="bg-green-500 text-white px-4 py-2 rounded"
-                  onClick={onSendOrder} // Llamamos a la función para enviar la orden
+                  onClick={onSendOrder}
                 >
                   Enviar
                 </button>

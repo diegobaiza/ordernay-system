@@ -9,13 +9,11 @@ import {
 } from "sequelize-typescript";
 import Category from "../Category/category.model";
 import Product from "../Product/product.model";
-import { initializeCategories } from "../Category/dataCategory";
 
 interface SubCategoryAttributes {
   id?: number;
   name?: string;
   categoryID?: number;
-  // productID?: number;
 }
 
 @Table({
@@ -48,17 +46,15 @@ class SubCategory
 
   @BelongsTo(() => Category, {
     foreignKey: "categoryID",
-    as: "categories",
+    as: "category",
   })
   category!: Category;
 
   @HasMany(() => Product, {
-    // foreignKey: "product_ID",
+    foreignKey: "subCategoryID",
     as: "products",
   })
-  product!: Product[];
+  products!: Product[];
 }
-
-initializeCategories;
 
 export default SubCategory;

@@ -8,8 +8,7 @@ import {
   HasMany,
 } from "sequelize-typescript";
 import SubCategory from "../SubCategory/subCategory.model";
-import { initializeProducts } from "../../models/Product/dataProducts";
-import Presentation from "../Presentation/presentation.model";
+import OrderDetail from "../OrderDetail/orderDetail.model";
 
 interface ProductAttributes {
   id?: number;
@@ -58,17 +57,14 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
 
   @BelongsTo(() => SubCategory, {
     foreignKey: "subCategoryID",
-    as: "sub_categories",
+    as: "sub_category",
   })
   subCategory!: SubCategory;
 
-  @HasMany(() => Presentation, {
-    // foreignKey: "presentationID",
-    as: "presentations",
+  @HasMany(() => OrderDetail, {
+    as: "order_details",
   })
-  presentation!: Presentation;
+  orderDetails!: OrderDetail[];
 }
-
-initializeProducts;
 
 export default Product;

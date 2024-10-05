@@ -1,22 +1,20 @@
 import React from "react";
-import { CardProps } from "../../- subComponents/Card/CardInterface";
-import { CardActionsProps } from "../../- subComponents/Card/CardActions/CardActionsInterface";
 import CardActions from "../../- subComponents/Card/CardActions/CardActions";
-import NextOrder from "../NextOrder/NextOrder";
 
-// Función para calcular el tiempo transcurrido
-const timeSince = (date: Date) => {
-  const now = new Date();
-  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-  let interval = Math.floor(seconds / 60);
+interface OrderItem {
+  name: string;
+  quantity: number;
+}
 
-  if (interval > 1) {
-    return `${interval} minutos`;
-  }
-  return "hace un momento";
-};
+interface OrderInProgressProps {
+  tableNumber: number;
+  items: OrderItem[];
+}
 
-const Card: React.FC<CardProps> = ({ tableNumber, items }) => {
+const OrderInProgress: React.FC<OrderInProgressProps> = ({
+  tableNumber,
+  items,
+}) => {
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleComplete = () => {
@@ -26,10 +24,6 @@ const Card: React.FC<CardProps> = ({ tableNumber, items }) => {
   const handleCancel = () => {
     alert("Pedido cancelado.");
   };
-
-  // Calcular el tiempo transcurrido desde hace 11 minutos
-  const orderTime = new Date(Date.now() - 11 * 60000); // Hace 11 minutos
-  const timeSinceOrder = timeSince(orderTime); // Convertirlo a string
 
   return (
     <div className="p-2 flex-col space-y-6">
@@ -43,18 +37,21 @@ const Card: React.FC<CardProps> = ({ tableNumber, items }) => {
             <h2 className="text-2xl font-bold">Mesa {tableNumber}</h2>
           </div>
           <div className="p-4">
-            {items.map((item, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center mb-4 pb-2"
-              >
-                <span className="text-xl font-semibold text-green-dark">
-                  {item.quantity}
-                </span>
-                <span className="text-xl text-green-dark">{item.name}</span>
-                <span></span>
-              </div>
-            ))}
+            {items.length === 0 ? (
+              <p>No hay productos en el pedido actual</p>
+            ) : (
+              items.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center mb-4 pb-2"
+                >
+                  <span className="text-xl font-semibold text-green-dark">
+                    {item.quantity}
+                  </span>
+                  <span className="text-xl text-green-dark">{item.name}</span>
+                </div>
+              ))
+            )}
           </div>
           <div className="bg-green-palid px-4 py-2 text-right">
             <span className="font-semibold text-lg text-green-dark">
@@ -65,17 +62,8 @@ const Card: React.FC<CardProps> = ({ tableNumber, items }) => {
 
         <CardActions onComplete={handleComplete} onCancel={handleCancel} />
       </div>
-
-      {/* Título "Siguiente" con margen superior */}
-      <div className="max-w-md mx-auto mt-8">
-        {/* <h1 className="text-2xl font-bold mb-4 text-left text-green-dark">
-          Siguiente
-        </h1> */}
-
-        {/* <NextOrder tableNumber={5} /> */}
-      </div>
     </div>
   );
 };
 
-export default Card;
+export default OrderInProgress;
