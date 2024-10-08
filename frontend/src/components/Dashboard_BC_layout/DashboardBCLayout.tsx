@@ -11,7 +11,6 @@ const DashboardBCLayout: React.FC = () => {
   const [nextOrder, setNextOrder] = useState<any>(null);
   const [ordersInQueue, setOrdersInQueue] = useState<any[]>([]);
 
-  // Fetch orders from backend based on role
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -20,7 +19,6 @@ const DashboardBCLayout: React.FC = () => {
         );
         const { currentOrder, nextOrder, ordersInQueue } = response.data;
 
-        // Asegúrate de que los datos existen antes de asignarlos
         setCurrentOrder(currentOrder || null);
         setNextOrder(nextOrder || null);
         setOrdersInQueue(ordersInQueue || []);

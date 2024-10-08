@@ -84,6 +84,7 @@ const MenuView: React.FC = () => {
     if (existingItemIndex !== -1) {
       const updatedOrderItems = [...orderItems];
       updatedOrderItems[existingItemIndex].quantity += 1;
+      console.log(updatedOrderItems);
       setOrderItems(updatedOrderItems);
     } else {
       setOrderItems([

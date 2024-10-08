@@ -10,7 +10,7 @@ export interface OrderSummaryProps {
   tableNumber: number;
   onRemoveItem: (productID: string) => void;
   onSendOrder: () => Promise<void>;
-  onUpdateQuantity: (productID: string, quantity: number) => void; // Nueva función para actualizar la cantidad
+  onUpdateQuantity: (productID: string, quantity: number) => void;
 }
 
 const OrderSummary: React.FC<OrderSummaryProps> = ({

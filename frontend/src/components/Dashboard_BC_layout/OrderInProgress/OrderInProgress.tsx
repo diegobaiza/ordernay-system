@@ -45,6 +45,7 @@ const OrderInProgress: React.FC<OrderInProgressProps> = ({
                   key={index}
                   className="flex justify-between items-center mb-4 pb-2"
                 >
+                  {" "}
                   <span className="text-xl font-semibold text-green-dark">
                     {item.quantity}
                   </span>

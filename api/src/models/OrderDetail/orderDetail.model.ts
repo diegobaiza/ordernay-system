@@ -62,13 +62,13 @@ class OrderDetail
 
   @BelongsTo(() => Order, {
     foreignKey: "orderID",
-    as: "orders", // Cambiado a singular
+    as: "order", // Cambiado a singular
   })
   order!: Order;
 
   @BelongsTo(() => Product, {
     foreignKey: "productID",
-    as: "products", // Cambiado a singular
+    as: "product", // Cambiado a singular
   })
   product!: Product;
 }

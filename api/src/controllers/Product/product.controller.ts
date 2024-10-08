@@ -19,7 +19,7 @@ export class ProductController {
 
       const products = await Product.findAll({
         where: whereClause,
-        include: [{ model: SubCategory, as: "sub_category" }],
+        include: [{ model: SubCategory, as: "subCategory" }],
       });
 
       if (products.length === 0) {
@@ -74,7 +74,7 @@ export class ProductController {
 
     try {
       const product = await Product.findByPk(id, {
-        include: [{ model: SubCategory, as: "sub_category" }],
+        include: [{ model: SubCategory, as: "subCategory" }],
       });
       if (!product) {
         return res.status(404).json({ message: "Product not found." });

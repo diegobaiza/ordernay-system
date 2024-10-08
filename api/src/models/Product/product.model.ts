@@ -57,12 +57,12 @@ class Product extends Model<ProductAttributes> implements ProductAttributes {
 
   @BelongsTo(() => SubCategory, {
     foreignKey: "subCategoryID",
-    as: "sub_category",
+    as: "subCategory",
   })
   subCategory!: SubCategory;
 
   @HasMany(() => OrderDetail, {
-    as: "order_details",
+    as: "orderDetails",
   })
   orderDetails!: OrderDetail[];
 }

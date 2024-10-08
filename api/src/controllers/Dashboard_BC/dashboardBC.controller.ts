@@ -17,7 +17,7 @@ export class DashboardController {
         include: [
           {
             model: OrderDetail,
-            as: "order_details", // Debe coincidir con el alias en OrderDetail
+            as: "orderDetails", // Debe coincidir con el alias en OrderDetail
             include: [
               {
                 model: Product,
@@ -25,7 +25,7 @@ export class DashboardController {
                 include: [
                   {
                     model: SubCategory,
-                    as: "sub_category", // Debe coincidir con el alias en SubCategory
+                    as: "subCategory", // Debe coincidir con el alias en SubCategory
                     include: [
                       {
                         model: Category,
@@ -82,7 +82,7 @@ export class DashboardController {
         include: [
           {
             model: OrderDetail,
-            as: "order_details", // Debe coincidir con el alias en OrderDetail
+            as: "orderDetails", // Debe coincidir con el alias en OrderDetail
             include: [
               {
                 model: Product,
@@ -90,7 +90,7 @@ export class DashboardController {
                 include: [
                   {
                     model: SubCategory,
-                    as: "sub_category", // Debe coincidir con el alias en SubCategory
+                    as: "subCategory", // Debe coincidir con el alias en SubCategory
                     include: [
                       {
                         model: Category,

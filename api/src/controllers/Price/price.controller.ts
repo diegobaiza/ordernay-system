@@ -41,7 +41,7 @@ export class PriceController {
     try {
       // Crear nuevo precio
       const newPrice = await Price.create({
-        presentationID,
+        // presentationID,
         price,
         currency,
       });
@@ -98,7 +98,7 @@ export class PriceController {
       }
 
       // Actualizar campos
-      if (presentationID !== undefined) price.presentationID = presentationID;
+      // if (presentationID !== undefined) price.presentationID = presentationID;
       if (newPrice !== undefined) price.price = newPrice;
       if (currency !== undefined) price.currency = currency;
 

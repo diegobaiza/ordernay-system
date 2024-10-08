@@ -11,6 +11,8 @@ export class OrderController {
   public async createOrder(req: Request, res: Response): Promise<Response> {
     const { usernameID, tableID, status, items } = req.body;
 
+    console.log("body de la orden:", req.body);
+
     if (!usernameID || !tableID || !status || !items || items.length === 0) {
       return res.status(400).json({
         error: "Missing required fields or no items in the order.",
@@ -25,10 +27,11 @@ export class OrderController {
 
       for (const item of items) {
         const product = await Product.findByPk(item.productID, {
+          // raw: true,
           include: [
             {
               model: SubCategory,
-              as: "sub_category",
+              as: "subCategory",
               include: [
                 {
                   model: Category,
@@ -47,17 +50,17 @@ export class OrderController {
         const subCategory = product.subCategory;
         const category = subCategory ? subCategory.category : undefined;
 
-        console.log("Producto obtenido:", product);
-        console.log("SubCategory del producto:", subCategory);
-        console.log("Category de la SubCategory:", category);
+        console.log("Producto obtenido:", product.name);
+        console.log("SubCategory del producto:", subCategory.name);
+        console.log("Category de la SubCategory:", category?.name);
 
         const categoryName = category?.name || "undefined";
 
         console.log("Nombre de la categoría:", categoryName);
 
-        if (categoryName === "bebidas") {
+        if (categoryName === "Bebidas") {
           ordersForBartender.push(item);
-        } else if (["desayunos", "comidas"].includes(categoryName)) {
+        } else if (["Desayunos", "Comidas"].includes(categoryName)) {
           ordersForCocinero.push(item);
         }
 
