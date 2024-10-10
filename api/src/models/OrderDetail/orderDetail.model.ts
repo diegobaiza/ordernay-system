@@ -34,6 +34,13 @@ class OrderDetail
   })
   id!: number;
 
+  // @ForeignKey(() => TableSite)
+  // @Column({
+  //   type: DataType.INTEGER,
+  //   allowNull: false,
+  // })
+  // tableID!: number;
+
   @ForeignKey(() => Order)
   @Column({
     type: DataType.INTEGER,
@@ -62,13 +69,13 @@ class OrderDetail
 
   @BelongsTo(() => Order, {
     foreignKey: "orderID",
-    as: "order", // Cambiado a singular
+    as: "orders",
   })
   order!: Order;
 
   @BelongsTo(() => Product, {
     foreignKey: "productID",
-    as: "product", // Cambiado a singular
+    as: "product",
   })
   product!: Product;
 }

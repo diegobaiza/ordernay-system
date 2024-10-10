@@ -11,7 +11,7 @@ export class OrderController {
   public async createOrder(req: Request, res: Response): Promise<Response> {
     const { usernameID, tableID, status, items } = req.body;
 
-    console.log("body de la orden:", req.body);
+    console.log(req.body);
 
     if (!usernameID || !tableID || !status || !items || items.length === 0) {
       return res.status(400).json({
@@ -27,7 +27,6 @@ export class OrderController {
 
       for (const item of items) {
         const product = await Product.findByPk(item.productID, {
-          // raw: true,
           include: [
             {
               model: SubCategory,
@@ -47,23 +46,23 @@ export class OrderController {
             .status(404)
             .json({ error: `Product not found: ID ${item.productID}` });
         }
-        const subCategory = product.subCategory;
-        const category = subCategory ? subCategory.category : undefined;
 
-        console.log("Producto obtenido:", product.name);
-        console.log("SubCategory del producto:", subCategory.name);
-        console.log("Category de la SubCategory:", category?.name);
+        const categoryName = product.subCategory?.category?.name;
 
-        const categoryName = category?.name || "undefined";
-
-        console.log("Nombre de la categoría:", categoryName);
-
+        // Clasificación por categoría
         if (categoryName === "Bebidas") {
-          ordersForBartender.push(item);
+          ordersForBartender.push({
+            name: product.name,
+            quantity: item.quantity,
+          });
         } else if (["Desayunos", "Comidas"].includes(categoryName)) {
-          ordersForCocinero.push(item);
+          ordersForCocinero.push({
+            name: product.name,
+            quantity: item.quantity,
+          });
         }
 
+        // Crear el detalle de la orden
         await OrderDetail.create({
           orderID: order.id,
           productID: item.productID,
@@ -71,10 +70,42 @@ export class OrderController {
         });
       }
 
-      return res.status(201).json({
+      console.log(
+        "Estas son las ordenes del cocinero" + JSON.stringify(ordersForCocinero)
+      );
+
+      console.log(
+        "Estas son las ordenes del bartender" +
+          JSON.stringify(ordersForBartender)
+      );
+
+      // Devolver las órdenes separadas para cocinero y bartender
+      return res.status(200).json({
         message: "Order created successfully",
-        cocineroOrders: ordersForCocinero,
-        bartenderOrders: ordersForBartender,
+        cocineroOrders:
+          ordersForCocinero.length > 0
+            ? {
+                currentOrder: {
+                  id: order.id,
+                  tableNumber: tableID,
+                  items: ordersForCocinero,
+                },
+                nextOrder: null,
+                ordersInQueue: [],
+              }
+            : null,
+        bartenderOrders:
+          ordersForBartender.length > 0
+            ? {
+                currentOrder: {
+                  id: order.id,
+                  tableNumber: tableID,
+                  items: ordersForBartender,
+                },
+                nextOrder: null,
+                ordersInQueue: [],
+              }
+            : null,
       });
     } catch (error) {
       return res.status(500).json({

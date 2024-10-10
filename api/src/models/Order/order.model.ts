@@ -64,7 +64,7 @@ class Order extends Model<OrderAttributes> implements OrderAttributes {
 
   @HasMany(() => OrderDetail, {
     foreignKey: "orderID",
-    as: "orderDetails", // Cambiado a plural para reflejar la relación de uno a muchos
+    as: "orderDetails",
   })
   orderDetails!: OrderDetail[];
 }

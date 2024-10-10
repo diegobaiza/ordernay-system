@@ -1,5 +1,6 @@
 import React from "react";
-import { OrderItem } from "../../- subComponents/Card/CardInterface";
+import { OrderItem } from "../OrderInProgress/OrderInProgress";
+// import { OrderItem } from "../../- subComponents/Card/CardInterface";
 import NextOrderCard from "./NextOrderCard";
 
 interface NextOrderProps {

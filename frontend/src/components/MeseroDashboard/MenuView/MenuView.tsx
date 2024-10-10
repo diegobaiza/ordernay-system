@@ -132,6 +132,7 @@ const MenuView: React.FC = () => {
         status: "pending", // Define un estado por defecto
         items: orderItems.map((item) => ({
           productID: item.productID, // Solo enviamos el productID y quantity
+          name: item.name,
           quantity: item.quantity,
         })),
       };

@@ -1,9 +1,10 @@
 import React from "react";
 import OrderInQueueCard from "./OrderInQueueCard";
+import { OrderItem } from "../../- subComponents/Card/CardInterface";
 
 interface OrderQueueProps {
   tableNumber: number;
-  dish: string;
+  name: string;
   timeElapsed: string;
 }
 
@@ -25,7 +26,7 @@ const OrdersQueue: React.FC<OrdersQueueProps> = ({ orders }) => {
             <OrderInQueueCard
               key={index}
               tableNumber={order.tableNumber}
-              dish={order.dish}
+              name={order.name}
               timeElapsed={order.timeElapsed}
             />
           ))

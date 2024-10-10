@@ -1,7 +1,7 @@
 import React from "react";
 import CardActions from "../../- subComponents/Card/CardActions/CardActions";
 
-interface OrderItem {
+export interface OrderItem {
   name: string;
   quantity: number;
 }
@@ -43,13 +43,14 @@ const OrderInProgress: React.FC<OrderInProgressProps> = ({
               items.map((item, index) => (
                 <div
                   key={index}
-                  className="flex justify-between items-center mb-4 pb-2"
+                  className="flex justify-between text-center mb-4 pb-2"
                 >
                   {" "}
                   <span className="text-xl font-semibold text-green-dark">
                     {item.quantity}
                   </span>
                   <span className="text-xl text-green-dark">{item.name}</span>
+                  <h2></h2>
                 </div>
               ))
             )}

@@ -2,13 +2,13 @@ import React from "react";
 
 interface OrderInQueueCardProps {
   tableNumber: number;
-  dish: string;
+  name: string;
   timeElapsed: string;
 }
 
 const OrderInQueueCard: React.FC<OrderInQueueCardProps> = ({
   tableNumber,
-  dish,
+  name,
   timeElapsed,
 }) => {
   return (
@@ -20,7 +20,7 @@ const OrderInQueueCard: React.FC<OrderInQueueCardProps> = ({
 
       {/* Plato en cola */}
       <span className="flex-1 text-center mx-2 text-white border-solid rounded-xl p-2 bg-green-forest">
-        {dish}
+        {name}
       </span>
 
       {/* Tiempo transcurrido */}
