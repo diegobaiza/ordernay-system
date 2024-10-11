@@ -3,7 +3,9 @@ import CardActions from "../../- subComponents/Card/CardActions/CardActions";
 
 export interface OrderItem {
   name: string;
+  tableNumber: number;
   quantity: number;
+  items: OrderItem[];
 }
 
 interface OrderInProgressProps {

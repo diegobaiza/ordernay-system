@@ -36,6 +36,7 @@ const DashboardBCLayout: React.FC = () => {
         setNextOrder(nextOrder || null);
         setOrdersInQueue(ordersInQueue || []);
       }
+      console.log(ordersInQueue);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -78,7 +79,11 @@ const DashboardBCLayout: React.FC = () => {
       {/* Columna derecha: Pedidos en cola */}
       <div className="flex-1 basis-1/2 p-2 rounded-md">
         {ordersInQueue.length > 0 ? (
-          <OrdersQueue orders={ordersInQueue} />
+          <OrdersQueue
+            // tableNumber={nextOrder?.tableNumber}
+            items={ordersInQueue}
+            orderTime={new Date()}
+          />
         ) : (
           <div className="text-center text-gray-500">
             No hay pedidos en cola.
